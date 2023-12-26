@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Body
 from cypher import Bitcoin_Cypher
-from common import RetrieveArgs, get_hash
+from common import RetrieveArgs, get_hash, get_database
 from client import bitcoin, cache
 import json
 
-bitcoin_router = APIRouter("/bitcoin")
+bitcoin_router = APIRouter(prefix="/bitcoin")
+
+bitcoin_database = lambda timestamp: get_database("bitcoin", timestamp)
 
 @bitcoin_router.post("/transaction")
 async def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
@@ -26,7 +28,17 @@ async def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None,
     args.reverse
   )
 
-  resp = bitcoin.session().run(query)
+  start_database = bitcoin_database(args.startTime)
+  end_database = bitcoin_database(args.endTime)
+  if start_database != end_database:
+    start_resp = bitcoin.session(database=start_database).run(query)
+    end_resp = bitcoin.session(database=end_database).run(query)
+    transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
+    transactions.sort(key=lambda x: x["timestamp"])
+    cache.set(hash, json.dumps(transactions), ex=60 * 60)
+    return transactions[0:limit]
+
+  resp = bitcoin.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
   cache.set(hash, json.dumps(transactions), ex=60 * 60)
   return transactions[0:limit]

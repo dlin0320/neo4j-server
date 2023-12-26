@@ -1,11 +1,11 @@
 class Bitcoin_Cypher:
   @staticmethod
-  def retrieve_transaction(address, limit, startTime, endTime, minValue, maxValue, reverse):
+  def retrieve_transaction(address, startTime, endTime, minValue, maxValue, reverse):
     return (
       f"""
         CALL bitcoin.retrieve.transaction(
-          '{address}',
-          {limit},
+          "{address}",
+          null,
           {startTime},
           {endTime},
           {minValue},
@@ -19,12 +19,12 @@ class Bitcoin_Cypher:
 
 class Ethereum_Cypher:
   @staticmethod
-  def retrieve_transaction(address, limit, startTime, endTime, minValue, maxValue, reverse):
+  def retrieve_transaction(address, startTime, endTime, minValue, maxValue, reverse):
     return (
       f"""
         CALL ethereum.retrieve.transaction(
-          '{address}',
-          {limit},
+          "{address}",
+          null,
           {startTime},
           {endTime},
           {minValue},
@@ -37,12 +37,12 @@ class Ethereum_Cypher:
     )
   
   @staticmethod
-  def retrieve_token_transfer(address, limit, startTime, endTime, minValue, maxValue, reverse):
+  def retrieve_token_transfer(address, startTime, endTime, minValue, maxValue, reverse):
     return (
       f"""
         CALL ethereum.retrieve.tokenTransfer(
-          '{address}',
-          {limit},
+          "{address}",
+          null,
           {startTime},
           {endTime},
           {minValue},
@@ -57,12 +57,12 @@ class Ethereum_Cypher:
 
 class Tron_Cypher:
   @staticmethod
-  def retrieve_transaction(address, limit, startTime, endTime, minValue, maxValue, reverse):
+  def retrieve_transaction(address, startTime, endTime, minValue, maxValue, reverse):
     return (
       f"""
         CALL tron.retrieve.transaction(
-          '{address}',
-          {limit},
+          "{address}",
+          null,
           {startTime},
           {endTime},
           {minValue},
@@ -75,12 +75,12 @@ class Tron_Cypher:
     )
   
   @staticmethod
-  def retrieve_token_transfer(address, limit, startTime, endTime, minValue, maxValue, reverse):
+  def retrieve_token_transfer(address, startTime, endTime, minValue, maxValue, reverse):
     return (
       f"""
         CALL tron.retrieve.tokenTransfer(
-          '{address}',
-          {limit},
+          "{address}",
+          null,
           {startTime},
           {endTime},
           {minValue},
