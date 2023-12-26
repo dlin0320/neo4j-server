@@ -1,7 +1,8 @@
+from common.utility import get_hash, get_database
+from common.constant import RetrieveArgs
+from cypher.bitcoin_cypher import *
 from fastapi import APIRouter, Body
-from cypher import Bitcoin_Cypher
-from common import RetrieveArgs, get_hash, get_database
-from client import bitcoin, cache
+from service import bitcoin, cache
 import json
 
 bitcoin_router = APIRouter(prefix="/bitcoin")
@@ -19,7 +20,7 @@ async def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None,
     if page:
       return transactions[page * limit: (page + 1) * limit]
 
-  query = Bitcoin_Cypher.retrieve_transaction(
+  query = retrieve_transaction(
     args.address,
     args.startTime,
     args.endTime,

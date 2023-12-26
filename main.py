@@ -1,8 +1,6 @@
-from bitcoin_router import bitcoin_router
-from ethereum_router import ethereum_router
-from tron_router import tron_router
 from fastapi import FastAPI, HTTPException
 from logging import getLogger
+from router import *
 
 logger = getLogger(__name__)
 

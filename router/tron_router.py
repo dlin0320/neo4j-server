@@ -1,7 +1,8 @@
+from common.utility import get_hash, get_database
+from common.constant import RetrieveArgs
+from cypher.bitcoin_cypher import *
 from fastapi import APIRouter, Body
-from cypher import Tron_Cypher
-from common import RetrieveArgs, get_hash, get_database
-from client import tron, cache
+from service import tron, cache
 import json
 
 tron_router= APIRouter(prefix="/tron")
@@ -19,7 +20,7 @@ def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit
     if page:
       return transactions[page * limit: (page + 1) * limit]
     
-  query = Tron_Cypher.retrieve_transaction(
+  query = retrieve_transaction(
     args.address,
     args.startTime,
     args.endTime,
@@ -54,7 +55,7 @@ def retrieve_token_transfer(args: RetrieveArgs = Body(...), page: int = None, li
     if page:
       return transactions[page * limit: (page + 1) * limit]
     
-  query = Tron_Cypher.retrieve_token_transfer(
+  query = retrieve_token_transfer(
     args.address,
     args.startTime,
     args.endTime,

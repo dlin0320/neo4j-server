@@ -1,4 +1,4 @@
-from common import BITCOIN_NEO4J, ETHEREUM_NEO4J, TRON_NEO4J, NEO4J_READER, READER_PASSWORD
+from common.constant import BITCOIN_NEO4J, ETHEREUM_NEO4J, TRON_NEO4J, NEO4J_READER, READER_PASSWORD
 from neo4j import GraphDatabase
 import redis
 
