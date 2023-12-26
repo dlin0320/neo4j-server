@@ -1,6 +1,15 @@
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
 import hashlib
 import time
+import os
+
+load_dotenv()
+BITCOIN_NEO4J = os.environ.get('BITCOIN_NEO4J')
+ETHEREUM_NEO4J = os.environ.get('ETHEREUM_NEO4J')
+TRON_NEO4J = os.environ.get('TRON_NEO4J')
+NEO4J_READER = os.environ.get('NEO4J_READER')
+READER_PASSWORD = os.environ.get('READER_PASSWORD')
 
 class RetrieveArgs(BaseModel):
   address: str
