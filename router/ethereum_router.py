@@ -10,7 +10,7 @@ ethereum_router = APIRouter(prefix="/ethereum")
 ethereum_database = lambda timestamp: get_database("ethereum", timestamp)
 
 @ethereum_router.post("/transaction")
-def retrieve_transaction_query(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
+def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
   hash = get_hash(args)
   resp = retrieve_cache.get(hash)
 
@@ -45,7 +45,7 @@ def retrieve_transaction_query(args: RetrieveArgs = Body(...), page: int = None,
   return transactions[0:limit]
 
 @ethereum_router.post("/tokenTransfer")
-def retrieve_token_transfer_query(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
+def retrieve_token_transfer(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
   hahs = get_hash(args)
   resp = retrieve_cache.get(hash)
 

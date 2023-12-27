@@ -10,7 +10,7 @@ bitcoin_router = APIRouter(prefix="/bitcoin")
 bitcoin_database = lambda timestamp: get_database("bitcoin", timestamp)
 
 @bitcoin_router.post("/transaction")
-def retrieve_transaction_query(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
+def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
   hash = get_hash(args)
   resp = retrieve_cache.get(hash)
 
@@ -45,7 +45,7 @@ def retrieve_transaction_query(args: RetrieveArgs = Body(...), page: int = None,
   return transactions[0:limit]
 
 @bitcoin_router.post("/graph")
-def graph_transaction_query(args: GraphArgs = Body(...), page: int = None, limit: int = 20):
+def graph_transaction(args: GraphArgs = Body(...), page: int = None, limit: int = 20):
   hash = get_hash(args)
   resp = graph_cache.get(hash)
 
