@@ -45,15 +45,12 @@ def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit
   return transactions[0:limit]
 
 @bitcoin_router.post("/graph")
-def graph_transaction(args: GraphArgs = Body(...), page: int = None, limit: int = 20):
+def graph_transaction(args: GraphArgs = Body(...)):
   hash = get_hash(args)
   resp = graph_cache.get(hash)
 
   if resp:
     transactions = json.loads(resp)
-    limit = min(100, limit)
-    if page:
-      return transactions[page * limit: (page + 1) * limit]
 
   query = graph_transaction_query(
     args.address,
@@ -75,9 +72,9 @@ def graph_transaction(args: GraphArgs = Body(...), page: int = None, limit: int 
     transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
     transactions.sort(key=lambda x: x["timestamp"])
     retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
-    return transactions[0:limit]
+    return transactions
 
   resp = bitcoin.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
   retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
-  return transactions[0:limit]
+  return transactions
