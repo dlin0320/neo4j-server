@@ -1,4 +1,4 @@
-def retrieve_transaction(address, startTime, endTime, minValue, maxValue, reverse):
+def retrieve_transaction_query(address, startTime, endTime, minValue, maxValue, reverse):
   return (
     f"""
       CALL tron.retrieve.transaction(
@@ -15,7 +15,7 @@ def retrieve_transaction(address, startTime, endTime, minValue, maxValue, revers
     """
   )
 
-def retrieve_token_transfer(address, startTime, endTime, minValue, maxValue, reverse):
+def retrieve_token_transfer_query(address, startTime, endTime, minValue, maxValue, reverse):
   return (
     f"""
       CALL tron.retrieve.tokenTransfer(

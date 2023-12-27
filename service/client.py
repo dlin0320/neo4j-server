@@ -8,4 +8,6 @@ ethereum = GraphDatabase.driver(ETHEREUM_NEO4J, auth=(NEO4J_READER, READER_PASSW
 
 tron = GraphDatabase.driver(TRON_NEO4J, auth=(NEO4J_READER, READER_PASSWORD))
 
-cache = redis.Redis()
+retrieve_cache = redis.Redis(db=0)
+
+graph_cache = redis.Redis(db=1)

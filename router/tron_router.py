@@ -1,8 +1,8 @@
 from common.utility import get_hash, get_database
 from common.constant import RetrieveArgs
-from cypher.bitcoin_cypher import *
+from cypher.tron_cypher import *
 from fastapi import APIRouter, Body
-from service import tron, cache
+from service import tron, retrieve_cache
 import json
 
 tron_router= APIRouter(prefix="/tron")
@@ -12,7 +12,7 @@ tron_database = lambda timestamp: get_database("tron", timestamp)
 @tron_router.post("/transaction")
 def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
   hash = get_hash(args)
-  resp = cache.get(hash)
+  resp = retrieve_cache.get(hash)
 
   if resp:
     transactions = json.loads(resp)
@@ -20,7 +20,7 @@ def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit
     if page:
       return transactions[page * limit: (page + 1) * limit]
     
-  query = retrieve_transaction(
+  query = retrieve_transaction_query(
     args.address,
     args.startTime,
     args.endTime,
@@ -36,18 +36,18 @@ def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit
     end_resp = tron.session(database=end_database).run(query)
     transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
     transactions.sort(key=lambda x: x["timestamp"])
-    cache.set(hash, json.dumps(transactions), ex=60 * 60)
+    retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
     return transactions[0:limit]
 
   resp = tron.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
-  cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
   return transactions[0:limit]
 
 @tron_router.post("/tokenTransfer")
 def retrieve_token_transfer(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
   hahs = get_hash(args)
-  resp = cache.get(hash)
+  resp = retrieve_cache.get(hash)
 
   if resp:
     transactions = json.loads(resp)
@@ -55,7 +55,7 @@ def retrieve_token_transfer(args: RetrieveArgs = Body(...), page: int = None, li
     if page:
       return transactions[page * limit: (page + 1) * limit]
     
-  query = retrieve_token_transfer(
+  query = retrieve_token_transfer_query(
     args.address,
     args.startTime,
     args.endTime,
@@ -71,10 +71,10 @@ def retrieve_token_transfer(args: RetrieveArgs = Body(...), page: int = None, li
     end_resp = tron.session(database=end_database).run(query)
     transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
     transactions.sort(key=lambda x: x["timestamp"])
-    cache.set(hash, json.dumps(transactions), ex=60 * 60)
+    retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
     return transactions[0:limit]
 
   resp = tron.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
-  cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
   return transactions[0:limit]
