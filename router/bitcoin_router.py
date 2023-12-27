@@ -30,14 +30,14 @@ def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit
   )
 
   start_database = bitcoin_database(args.startTime)
-  end_database = bitcoin_database(args.endTime)
-  if start_database != end_database:
-    start_resp = bitcoin.session(database=start_database).run(query)
-    end_resp = bitcoin.session(database=end_database).run(query)
-    transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
-    transactions.sort(key=lambda x: x["timestamp"])
-    retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
-    return transactions[0:limit]
+  # end_database = bitcoin_database(args.endTime)
+  # if start_database != end_database:
+  #   start_resp = bitcoin.session(database=start_database).run(query)
+  #   end_resp = bitcoin.session(database=end_database).run(query)
+  #   transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
+  #   transactions.sort(key=lambda x: x["timestamp"])
+  #   retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  #   return transactions[0:limit]
 
   resp = bitcoin.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
@@ -57,7 +57,6 @@ def graph_transaction(args: GraphArgs = Body(...)):
     args.timespan,
     args.maxRelationshipCount,
     args.startTime,
-    args.endTime,
     args.minValue,
     args.maxValue,
     args.depth * 2,
@@ -65,14 +64,14 @@ def graph_transaction(args: GraphArgs = Body(...)):
   )
 
   start_database = bitcoin_database(args.startTime)
-  end_database = bitcoin_database(args.endTime)
-  if start_database != end_database:
-    start_resp = bitcoin.session(database=start_database).run(query)
-    end_resp = bitcoin.session(database=end_database).run(query)
-    transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
-    transactions.sort(key=lambda x: x["timestamp"])
-    retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
-    return transactions
+  # end_database = bitcoin_database(args.endTime)
+  # if start_database != end_database:
+  #   start_resp = bitcoin.session(database=start_database).run(query)
+  #   end_resp = bitcoin.session(database=end_database).run(query)
+  #   transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
+  #   transactions.sort(key=lambda x: x["timestamp"])
+  #   retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  #   return transactions
 
   resp = bitcoin.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]

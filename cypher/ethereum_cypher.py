@@ -32,7 +32,7 @@ def retrieve_token_transfer_query(address, startTime, endTime, minValue, maxValu
     """
   )
 
-def graph_transaction_query(address, timespan, maxRelationshipCount, startTime, endTime, minValue, maxValue, depth, reverse):
+def graph_transaction_query(address, timespan, maxRelationshipCount, startTime, minValue, maxValue, depth, reverse):
   return (
     f"""
       CALL ethereum.graph.transaction(
@@ -40,7 +40,6 @@ def graph_transaction_query(address, timespan, maxRelationshipCount, startTime, 
         {timespan},
         {maxRelationshipCount},
         {startTime},
-        {endTime},
         {minValue},
         {maxValue},
         {depth},

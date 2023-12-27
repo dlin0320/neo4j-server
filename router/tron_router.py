@@ -30,14 +30,14 @@ def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit
   )
 
   start_database = tron_database(args.startTime)
-  end_database = tron_database(args.endTime)
-  if start_database != end_database:
-    start_resp = tron.session(database=start_database).run(query)
-    end_resp = tron.session(database=end_database).run(query)
-    transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
-    transactions.sort(key=lambda x: x["timestamp"])
-    retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
-    return transactions[0:limit]
+  # end_database = tron_database(args.endTime)
+  # if start_database != end_database:
+  #   start_resp = tron.session(database=start_database).run(query)
+  #   end_resp = tron.session(database=end_database).run(query)
+  #   transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
+  #   transactions.sort(key=lambda x: x["timestamp"])
+  #   retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  #   return transactions[0:limit]
 
   resp = tron.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
@@ -46,7 +46,7 @@ def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit
 
 @tron_router.post("/tokenTransfer")
 def retrieve_token_transfer(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
-  hahs = get_hash(args)
+  hash = get_hash(args)
   resp = retrieve_cache.get(hash)
 
   if resp:
@@ -65,14 +65,14 @@ def retrieve_token_transfer(args: RetrieveArgs = Body(...), page: int = None, li
   )
 
   start_database = tron_database(args.startTime)
-  end_database = tron_database(args.endTime)
-  if start_database != end_database:
-    start_resp = tron.session(database=start_database).run(query)
-    end_resp = tron.session(database=end_database).run(query)
-    transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
-    transactions.sort(key=lambda x: x["timestamp"])
-    retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
-    return transactions[0:limit]
+  # end_database = tron_database(args.endTime)
+  # if start_database != end_database:
+  #   start_resp = tron.session(database=start_database).run(query)
+  #   end_resp = tron.session(database=end_database).run(query)
+  #   transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
+  #   transactions.sort(key=lambda x: x["timestamp"])
+  #   retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  #   return transactions[0:limit]
 
   resp = tron.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
@@ -92,7 +92,6 @@ def graph_transaction(args: GraphArgs = Body(...)):
     args.timespan,
     args.maxRelationshipCount,
     args.startTime,
-    args.endTime,
     args.minValue,
     args.maxValue,
     args.depth,
@@ -100,14 +99,14 @@ def graph_transaction(args: GraphArgs = Body(...)):
   )
 
   start_database = tron_database(args.startTime)
-  end_database = tron_database(args.endTime)
-  if start_database != end_database:
-    start_resp = tron.session(database=start_database).run(query)
-    end_resp = tron.session(database=end_database).run(query)
-    transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
-    transactions.sort(key=lambda x: x["timestamp"])
-    retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
-    return transactions
+  # end_database = tron_database(args.endTime)
+  # if start_database != end_database:
+  #   start_resp = tron.session(database=start_database).run(query)
+  #   end_resp = tron.session(database=end_database).run(query)
+  #   transactions = [record["result"] for record in start_resp] + [record["result"] for record in end_resp]
+  #   transactions.sort(key=lambda x: x["timestamp"])
+  #   retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  #   return transactions
 
   resp = tron.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]

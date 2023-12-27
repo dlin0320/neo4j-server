@@ -23,7 +23,6 @@ class GraphArgs(BaseModel):
   timespan: int = Field(604800, ge=0)
   maxRelationshipCount: int = Field(3, ge=0)
   startTime: int = Field(0, ge=0)
-  endTime: int = Field(time.time(), ge=0)
   minValue: int = Field(0, ge=0)
   maxValue: int = Field(9223372036854775807, ge=0)
   depth: int = Field(5, ge=0)
