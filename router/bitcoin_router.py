@@ -64,7 +64,6 @@ def graph_transaction(args: GraphArgs = Body(...)):
     args.startTime,
     args.minValue,
     args.maxValue,
-    args.depth * 2,
     args.reverse
   )
 
