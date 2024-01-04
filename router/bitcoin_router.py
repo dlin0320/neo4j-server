@@ -1,3 +1,4 @@
+import logging
 from common.utility import get_hash, get_database
 from common.constant import RetrieveArgs, GraphArgs
 from cypher.bitcoin_cypher import *
@@ -8,6 +9,10 @@ import json
 bitcoin_router = APIRouter(prefix="/bitcoin")
 
 bitcoin_database = lambda timestamp: get_database("bitcoin", timestamp)
+
+logging.basicConfig(filename='debug.log', level=logging.INFO, filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+logger = logging.getLogger(__name__)
 
 @bitcoin_router.post("/transaction")
 def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit: int = 20):
@@ -76,4 +81,6 @@ def graph_transaction(args: GraphArgs = Body(...)):
   resp = bitcoin.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
   retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  logger.info(f"args: {args}")
+  logger.info(f"transaction: {transactions}")
   return transactions
