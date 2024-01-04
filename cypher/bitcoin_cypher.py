@@ -15,7 +15,7 @@ def retrieve_transaction_query(address, startTime, endTime, minValue, maxValue, 
     """
 )
 
-def graph_transaction_query(address, timespan, maxRelationshipCount, startTime, minValue, maxValue, depth, reverse):
+def graph_transaction_query(address, timespan, maxRelationshipCount, startTime, minValue, maxValue, reverse):
   return (
     f"""
       CALL bitcoin.graph.transaction(
