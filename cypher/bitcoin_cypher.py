@@ -25,7 +25,6 @@ def graph_transaction_query(address, timespan, maxRelationshipCount, startTime, 
         {startTime},
         {minValue},
         {maxValue},
-        {depth},
         {reverse}
       )
       YIELD result
