@@ -47,6 +47,8 @@ def retrieve_transaction(args: RetrieveArgs = Body(...), page: int = None, limit
   resp = bitcoin.session(database=start_database).run(query)
   transactions = [record["result"] for record in resp]
   retrieve_cache.set(hash, json.dumps(transactions), ex=60 * 60)
+  logger.info(f"args: {args}")
+  logger.info(f"transaction: {transactions}")
   return transactions[0:limit]
 
 @bitcoin_router.post("/graph")
